@@ -38,6 +38,7 @@
     "@angular/compiler": "^13.0.0",
     "@angular/compiler-cli": "^13.0.0",
     "@angular/core": "^13.0.0",
+    "del": "^6.1.1",
     "es6-shim": "^0.35.5",
     "gulp": "^4.0.2",
     "gulp-clean": "^0.4.0",

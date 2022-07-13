@@ -4,6 +4,7 @@
  */
 
 const { series, src, dest } = require('gulp');
+const del = require('del')
 const clean = require('gulp-clean');
 const { exec } = require('child_process');
 const path = require('path');
@@ -32,39 +33,31 @@ const execCommand = (cmd, options) => {
  * Compile the angular code to javascript
  * @param {Function} cb needs to execute at the end of the function 
  */
-const compile = async (cb) => {
-    try {
-        await execCommand('npm run build');
-    } catch (error) {
-        throw new Error('Error while compiling', error);
-    } finally {
-        cb();
-    }
+const compile = async () => {
+    return execCommand('npm run build')
 }
 
 /**
  * copy assets to package 
  * @param {Function} cb needs to execute at the end of the function
  */
-const copyAssets = (cb) => {
-    const stream = src(['tmp/esm2015/*.d.ts', 'tmp/esm2015/*.json','./package.json', './README.md']).pipe(dest('dist/'));
-    stream.on('end', () => cb());
+const copyAssets = () => {
+    return src(['tmp/esm2015/*.d.ts', 'tmp/esm2015/*.json', 'package.json', 'README.md']).pipe(dest('dist/'));
 };
 
 /**
  * copy declarations(d.ts) files to package 
  * @param {Function} cb needs to execute at the end of the function
  */
-const copySrcDeclarations = (cb) => {
-    src('tmp/esm2015/src/*.d.ts').pipe(dest('dist/src'));
-    cb();
+const copySrcDeclarations = () => {
+    return src('./tmp/esm2015/src/*.d.ts').pipe(dest('./dist/src/'));
 };
 
 /**
  * Run yarn pack command to create .tar file so that we can install package locally and test it
  * @param {Function} cb needs to execute at the end of the function
  */
-const pack = async (cb) => {
+const pack = async () => {
     try {
         await execCommand('yarn pack', { cwd: path.resolve(__dirname, 'dist') });
     } catch (error) {
@@ -76,18 +69,16 @@ const pack = async (cb) => {
  * Remove dist folder
  * @param {Function} cb needs to execute at the end of the function
  */
-const cleanDist = (cb) => {
-    src(path.resolve(__dirname, 'dist')).pipe(clean());
-    cb();
+const cleanDist = () => {
+    return del('./dist')
 };
 
 /**
  * Remove tmp folder
  * @param {Function} cb needs to execute at the end of the function
  */
-const cleanTmp = (cb) => {
-    src(path.resolve(__dirname, 'tmp')).pipe(clean());
-    cb();
+const cleanTmp = () => {
+    return del('./tmp')
 };
 
 /**
@@ -124,21 +115,21 @@ const updatePackageJson = async (cb) => {
 };
 
 /**
- * Create tmp direcatory in root folder and copy the src into the tmp src directory 
- * @param {Function} cb The callback that needs to execute at the end of function
- */
-const createTempDir = async (cb) => {
-    src(['./src/**/*.ts']).pipe(dest('./tmp/src'));
-};
-
-/**
  * Copy the public_api.ts file into the tmp directory 
  * @param {Function} cb The callback that needs to execute at the end of function
  */
-const copyPublicApi = async (cb) => {
-    src(['./public_api.ts']).pipe(dest('./tmp'));
+const copyPublicApi = () => {
+    return src(['./public_api.ts']).pipe(dest('./tmp/'));
 };
 
+/**
+ * Copy the src into the tmp src directory 
+ * @param {Function} cb The callback that needs to execute at the end of function
+ */
+const copySrcToTmp = () => {
+    return src(['./src/**/*.ts']).pipe(dest('./tmp/src/'));
+}
 
-exports.buildDev = series(cleanDist, createTempDir, copyPublicApi, compile, copyAssets, copySrcDeclarations, updatePackageJson, cleanTmp, pack);
-exports.default = series(cleanDist, createTempDir, copyPublicApi, compile, copyAssets, copySrcDeclarations, updatePackageJson, cleanTmp);
+exports.buildDev = series(cleanTmp, cleanDist, copySrcToTmp, copyPublicApi, compile, copyAssets, copySrcDeclarations, updatePackageJson, cleanTmp, pack);
+exports.default = series(cleanTmp, cleanDist, copySrcToTmp, copyPublicApi, compile, copyAssets, copySrcDeclarations, updatePackageJson, cleanTmp);
+exports.tmp = series(cleanTmp, cleanDist, copySrcToTmp, copyPublicApi, compile, copyAssets, copySrcDeclarations, updatePackageJson);
