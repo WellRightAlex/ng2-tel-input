@@ -6,7 +6,7 @@
         "rootDir": "./tmp"
     },
     "angularCompilerOptions": {
-        "annotateForClosureCompiler": true,
+        "annotateForClosureCompiler": false,
         "strictMetadataEmit": true,
         "skipTemplateCodegen": true,
         "flatModuleOutFile": "ng2-tel-input.js",
