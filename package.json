@@ -20,10 +20,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/WellRightAlex/ng2-tel-input.git"
+    "url": "git+https://github.com/wellrightalex/ng2-tel-input.git"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/WellRightAlex"
+    "registry": "https://npm.pkg.github.com/wellrightalex"
   },
   "keywords": [
     "Angular",
@@ -33,9 +33,9 @@
   "author": "sonigaurav119@gmail.com",
   "license": "MIT",
   "bugs": {
-    "url": "git+https://github.com/WellRightAlex/ng2-tel-input.git"
+    "url": "git+https://github.com/wellrightalex/ng2-tel-input.git"
   },
-  "homepage": "https://github.com/WellRightAlex/ng2-tel-input#readme",
+  "homepage": "https://github.com/wellrightalex/ng2-tel-input#readme",
   "devDependencies": {
     "@angular/common": "^13.0.0",
     "@angular/compiler": "^13.0.0",
