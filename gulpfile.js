@@ -105,7 +105,6 @@ const updatePackageJson = async (cb) => {
     const packageFile = JSON.parse(file);
     packageFile.devDependencies = {};
     packageFile.scripts = {};
-    packageFile.name = "@WellRightAlex/ng2-tel-input";
     packageFile.main = "./bundles/ng2-tel-input.umd.min.js";
     packageFile.module = "./esm5/ng2-tel-input.js";
     packageFile.es2015 = "./esm2015/ng2-tel-input.js";
